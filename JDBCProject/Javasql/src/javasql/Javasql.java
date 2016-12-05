@@ -23,33 +23,38 @@ public class Javasql {
         
         String sqlCreateDatabaseBooks = "CREATE DATABASE IF NOT EXISTS Books";
         
+        
+        String sqlCreateTablepublishers = "CREATE TABLE IF NOT EXISTS publishers"
+                                        + "(publisherID INTEGER, "
+                                        + " publisherName CHAR(100), "
+                                        + "PRIMARY KEY( publisherID ))";
+        
+        String sqlCreateTabletitles = "CREATE TABLE IF NOT EXISTS titles"
+                                        + " (isbn CHAR(10), "
+                                        + " title varchar(500), "
+                                        + " editionNumber INTEGER, "
+                                        + " year CHAR(4), "
+                                        + " publisherID INTEGER, "
+                                        + " price DECIMAL (5,2) NOT NULL, "
+                                        + " PRIMARY KEY( isbn ), "
+                                        + " FOREIGN KEY (publisherID) REFERENCES publishers(publisherID))";
+        
         String sqlCreateTableauthors = "CREATE TABLE IF NOT EXISTS authors"
-                                        + "(authorID INTEGER not NULL AUTO-INCREMENT, "
+                                        + "(authorID INTEGER not NULL AUTO_INCREMENT, "
                                         + " firstName CHAR(20), "
                                         + " lastName CHAR(20), "
                                         + " PRIMARY KEY ( authorID ))";
         
         String sqlCreateTableauthorISBN = "CREATE TABLE IF NOT EXISTS authorISBN"
                                         + "(authorID INTEGER, "
-                                        + " isnb CHAR(10), "
-                                        + " FOREIGN KEY(authorID) REFERNCES authors(authorID), "
-                                        + " FOREIGN KEY(isbn) REFERENCES titles(isbn)),";
+                                        + " isbn CHAR(10), "
+                                        + " FOREIGN KEY(authorID) REFERENCES authors(authorID), "
+                                        + " FOREIGN KEY(isbn) REFERENCES titles(isbn))";
                                         
         
-        String sqlCreateTabletitles = "CREATE TABLE IF NOT EXISTS titles"
-                                        + "(isbn CHAR(10), "
-                                        + " title VARHCHAR2(500), "
-                                        + " editionNumber INTEGER, "
-                                        + " year CHAR(4), "
-                                        + " publisherID INTEGER, "
-                                        + " price FLOAT, "
-                                        + " PRIMARY KEY(isbn), "
-                                        + " FOREIGN KEY(publisherID) REFERENCES publishers(publisherID))";
         
-        String sqlCreateTablepublishers = "CREATE TABLE IF NOT EXISTS publishers"
-                                        + "(publisherID INTEGER, "
-                                        + " publisherName CHAR(100), "
-                                        + "PRIMARY KEY( publisherID))";
+        
+        
         //HERE ARE INSERT STRINGS FOR AUTHOR TABLE
         String authorEntry1 = "INSERT INTO Books.authors(authorID, firstName, lastName) VALUES (1, 'Ryan', 'Zaeni')";
         String authorEntry2 = "INSERT INTO Books.authors(authorID, firstName, lastName) VALUES (2, 'John', 'Johnson')";
@@ -123,8 +128,8 @@ public class Javasql {
         String publishersEntry15 = "INSERT INTO Books.publishers(publisherID, publisherName) VALUES (15, '15Publisher')";
         
         //HERE ARE THE RESULTSET OBJECTS
-        ResultSet rsSelectAllAuthorsFromAuthors = null;
-        ResultSet rsSelectAllPublishersFromPublishers = null;
+        ResultSet rsSelectAllAuthorsFromauthors = null;
+        ResultSet rsSelectAllPublishersFrompublishers = null;
         ResultSet rsSelectSpecificPublisher = null;
         
         
@@ -138,21 +143,60 @@ public class Javasql {
         
             //All DB access is within try/catch block(Step 2)
             //Connect to the database specifying the user, password
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/","root", "password" );
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/","root", "password" );
             stmt = conn.createStatement();
             
             stmt.execute(sqlCreateDatabaseBooks); //Create Schema Books
             System.out.println("Created Database Books");
             
             //Now connect to Books within LocalHost
-            booksconn = DriverManager.getConnection("jdbc:mysql://localhost:3066/Books", "root" , "password");
+            booksconn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Books", "root" , "password");
             booksstmt = booksconn.createStatement();
+            
             //Now Create the tables needed.
+            booksstmt.executeUpdate(sqlCreateTablepublishers);
+            booksstmt.executeUpdate(sqlCreateTabletitles);
             booksstmt.executeUpdate(sqlCreateTableauthors);
             booksstmt.executeUpdate(sqlCreateTableauthorISBN);
-            booksstmt.executeUpdate(sqlCreateTabletitles);
-            booksstmt.executeUpdate(sqlCreateTablepublishers);
+            
+            
             System.out.println("Tables are now created");
+            
+              //Put values in the publishers table
+            booksstmt.executeUpdate(publishersEntry1);
+            booksstmt.executeUpdate(publishersEntry2);
+            booksstmt.executeUpdate(publishersEntry3);
+            booksstmt.executeUpdate(publishersEntry4);
+            booksstmt.executeUpdate(publishersEntry5);
+            booksstmt.executeUpdate(publishersEntry6);
+            booksstmt.executeUpdate(publishersEntry7);
+            booksstmt.executeUpdate(publishersEntry8);
+            booksstmt.executeUpdate(publishersEntry9);
+            booksstmt.executeUpdate(publishersEntry10);
+            booksstmt.executeUpdate(publishersEntry12);
+            booksstmt.executeUpdate(publishersEntry13);
+            booksstmt.executeUpdate(publishersEntry14);
+            booksstmt.executeUpdate(publishersEntry15);
+            
+            //Put values in the table titles
+            booksstmt.executeUpdate(titlesEntry1);
+            booksstmt.executeUpdate(titlesEntry2);
+            booksstmt.executeUpdate(titlesEntry3);
+            booksstmt.executeUpdate(titlesEntry4);
+            booksstmt.executeUpdate(titlesEntry5);
+            booksstmt.executeUpdate(titlesEntry6);
+            booksstmt.executeUpdate(titlesEntry7);
+            booksstmt.executeUpdate(titlesEntry8);
+            booksstmt.executeUpdate(titlesEntry9);
+            booksstmt.executeUpdate(titlesEntry10);
+            booksstmt.executeUpdate(titlesEntry11);
+            booksstmt.executeUpdate(titlesEntry12);
+            booksstmt.executeUpdate(titlesEntry13);
+            booksstmt.executeUpdate(titlesEntry14);
+            booksstmt.executeUpdate(titlesEntry15);
+            
+            
+            
             //Now Time to put values in the table author
             booksstmt.executeUpdate(authorEntry1);
             booksstmt.executeUpdate(authorEntry2);
@@ -187,39 +231,27 @@ public class Javasql {
             booksstmt.executeUpdate(authorISBNEntry14);
             booksstmt.executeUpdate(authorISBNEntry15);
             
-            //Put values in the table titles
-            booksstmt.executeUpdate(titlesEntry1);
-            booksstmt.executeUpdate(titlesEntry2);
-            booksstmt.executeUpdate(titlesEntry3);
-            booksstmt.executeUpdate(titlesEntry4);
-            booksstmt.executeUpdate(titlesEntry5);
-            booksstmt.executeUpdate(titlesEntry6);
-            booksstmt.executeUpdate(titlesEntry7);
-            booksstmt.executeUpdate(titlesEntry8);
-            booksstmt.executeUpdate(titlesEntry9);
-            booksstmt.executeUpdate(titlesEntry10);
-            booksstmt.executeUpdate(titlesEntry11);
-            booksstmt.executeUpdate(titlesEntry12);
-            booksstmt.executeUpdate(titlesEntry13);
-            booksstmt.executeUpdate(titlesEntry14);
-            booksstmt.executeUpdate(titlesEntry15);
+            //TIME TO EXECUTE SOME QUERIES 
             
-            //Put values in the publishers table
-            booksstmt.executeUpdate(publishersEntry1);
-            booksstmt.executeUpdate(publishersEntry2);
-            booksstmt.executeUpdate(publishersEntry3);
-            booksstmt.executeUpdate(publishersEntry4);
-            booksstmt.executeUpdate(publishersEntry5);
-            booksstmt.executeUpdate(publishersEntry6);
-            booksstmt.executeUpdate(publishersEntry7);
-            booksstmt.executeUpdate(publishersEntry8);
-            booksstmt.executeUpdate(publishersEntry9);
-            booksstmt.executeUpdate(publishersEntry10);
-            booksstmt.executeUpdate(publishersEntry12);
-            booksstmt.executeUpdate(publishersEntry13);
-            booksstmt.executeUpdate(publishersEntry14);
-            booksstmt.executeUpdate(publishersEntry15);
+            //EXECUTE ALL AUTHORS BY LAST NAME ORDER QUERY
+            System.out.println();
+            System.out.println("**************All Authors By Ordered Last Name**************** ");
+            rsSelectAllAuthorsFromauthors = booksstmt.executeQuery("SELECT * FROM authors ORDER BY lastName ASC");
+            while(rsSelectAllAuthorsFromauthors.next()){
+                System.out.println(rsSelectAllAuthorsFromauthors.getString("lastName") + " " +
+                        rsSelectAllAuthorsFromauthors.getString("firstName"));
+            }
             
+            //QUERY ALL PUBLISHERS FROM PUBLISHERS TABLE
+            System.out.println();
+            System.out.println("********All Publishers*************");
+            rsSelectAllPublishersFrompublishers = booksstmt.executeQuery("SELECT * FROM publishers");
+            while(rsSelectAllPublishersFrompublishers.next()){
+                System.out.println(rsSelectAllPublishersFrompublishers.getString("publisherName"));
+            }
+              
+            //QUERY FOR SPECIFIC PUBLISHER AND LIST ALL THEIR BOOKS. ORDERED BY TITLE.
+              //rsSelectSpecificPublisher = booksstmt.executeQuery("SELECT * FROM ")
             
             
              }
@@ -229,7 +261,21 @@ public class Javasql {
         }catch(Exception e)
         {
             e.printStackTrace();
-        }
+        }finally{
+            try{
+                if(stmt != null)
+                    stmt.close();
+            } catch(SQLException se1){
+                
+            }
+            try{
+                if(conn != null)
+                    conn.close();
+            }catch(SQLException se)
+            {
+                se.printStackTrace();
+            }
+        }//end finally block
        
     }
     
