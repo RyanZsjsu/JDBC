@@ -16,26 +16,221 @@ public class Javasql {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        Connection conn = null; //general connection to database
+        Statement stmt = null; //statement for general connection
+        Connection booksconn =  null; //connection to books in database
+        Statement booksstmt =  null; //statment for books connection
+        
+        String sqlCreateDatabaseBooks = "CREATE DATABASE IF NOT EXISTS Books";
+        
+        String sqlCreateTableauthors = "CREATE TABLE IF NOT EXISTS authors"
+                                        + "(authorID INTEGER not NULL AUTO-INCREMENT, "
+                                        + " firstName CHAR(20), "
+                                        + " lastName CHAR(20), "
+                                        + " PRIMARY KEY ( authorID ))";
+        
+        String sqlCreateTableauthorISBN = "CREATE TABLE IF NOT EXISTS authorISBN"
+                                        + "(authorID INTEGER, "
+                                        + " isnb CHAR(10), "
+                                        + " FOREIGN KEY(authorID) REFERNCES authors(authorID), "
+                                        + " FOREIGN KEY(isbn) REFERENCES titles(isbn)),";
+                                        
+        
+        String sqlCreateTabletitles = "CREATE TABLE IF NOT EXISTS titles"
+                                        + "(isbn CHAR(10), "
+                                        + " title VARHCHAR2(500), "
+                                        + " editionNumber INTEGER, "
+                                        + " year CHAR(4), "
+                                        + " publisherID INTEGER, "
+                                        + " price FLOAT, "
+                                        + " PRIMARY KEY(isbn), "
+                                        + " FOREIGN KEY(publisherID) REFERENCES publishers(publisherID))";
+        
+        String sqlCreateTablepublishers = "CREATE TABLE IF NOT EXISTS publishers"
+                                        + "(publisherID INTEGER, "
+                                        + " publisherName CHAR(100), "
+                                        + "PRIMARY KEY( publisherID))";
+        //HERE ARE INSERT STRINGS FOR AUTHOR TABLE
+        String authorEntry1 = "INSERT INTO Books.authors(authorID, firstName, lastName) VALUES (1, 'Ryan', 'Zaeni')";
+        String authorEntry2 = "INSERT INTO Books.authors(authorID, firstName, lastName) VALUES (2, 'John', 'Johnson')";
+        String authorEntry3 = "INSERT INTO Books.authors(authorID, firstName, lastName) VALUES (3, 'Ahmed', 'Ezzat')";
+        String authorEntry4 = "INSERT INTO Books.authors(authorID, firstName, lastName) VALUES (4, 'Rick', 'Ross')";
+        String authorEntry5 = "INSERT INTO Books.authors(authorID, firstName, lastName) VALUES (5, 'Rick', 'Jones')";
+        String authorEntry6 = "INSERT INTO Books.authors(authorID, firstName, lastName) VALUES (6, 'Peter', 'Griffin')";
+        String authorEntry7 = "INSERT INTO Books.authors(authorID, firstName, lastName) VALUES (7, 'Peter', 'Parker')";
+        String authorEntry8 = "INSERT INTO Books.authors(authorID, firstName, lastName) VALUES (8, 'Jack', 'Black')";
+        String authorEntry9 = "INSERT INTO Books.authors(authorID, firstName, lastName) VALUES (9, 'Nick', 'Jonas')";
+        String authorEntry10 = "INSERT INTO Books.authors(authorID, firstName, lastName) VALUES (10, 'Taylor', 'Swift')";
+        String authorEntry11 = "INSERT INTO Books.authors(authorID, firstName, lastName) VALUES (11, 'Donald', 'Trump')";
+        String authorEntry12 = "INSERT INTO Books.authors(authorID, firstName, lastName) VALUES (12, 'Barrack', 'Obama')";
+        String authorEntry13 = "INSERT INTO Books.authors(authorID, firstName, lastName) VALUES (13, 'George', 'Bush')";
+        String authorEntry14 = "INSERT INTO Books.authors(authorID, firstName, lastName) VALUES (14, 'Bill', 'Clinton')";
+        String authorEntry15 = "INSERT INTO Books.authors(authorID, firstName, lastName) VALUES (15, 'Hilary', 'Clinton')";
+        
+        //HERE ARE INSERT STRINGS FOR authorISBN TABLE
+        String authorISBNEntry1 = "INSERT INTO Books.authorISBN(authorID, isbn) VALUES (1, 'ABC1')";
+        String authorISBNEntry2 = "INSERT INTO Books.authorISBN(authorID, isbn) VALUES (2, 'ABC2')";
+        String authorISBNEntry3 = "INSERT INTO Books.authorISBN(authorID, isbn) VALUES (3, 'ABC3')";
+        String authorISBNEntry4 = "INSERT INTO Books.authorISBN(authorID, isbn) VALUES (4, 'ABC4')";
+        String authorISBNEntry5 = "INSERT INTO Books.authorISBN(authorID, isbn) VALUES (5, 'ABC5')";
+        String authorISBNEntry6 = "INSERT INTO Books.authorISBN(authorID, isbn) VALUES (6, 'ABC6')";
+        String authorISBNEntry7 = "INSERT INTO Books.authorISBN(authorID, isbn) VALUES (7, 'ABC7')";
+        String authorISBNEntry8 = "INSERT INTO Books.authorISBN(authorID, isbn) VALUES (8, 'ABC8')";
+        String authorISBNEntry9 = "INSERT INTO Books.authorISBN(authorID, isbn) VALUES (9, 'ABC9')";
+        String authorISBNEntry10 = "INSERT INTO Books.authorISBN(authorID, isbn) VALUES (10, 'ABC10')";
+        String authorISBNEntry11 = "INSERT INTO Books.authorISBN(authorID, isbn) VALUES (11, 'ABC11')";
+        String authorISBNEntry12 = "INSERT INTO Books.authorISBN(authorID, isbn) VALUES (12, 'ABC12')";
+        String authorISBNEntry13 = "INSERT INTO Books.authorISBN(authorID, isbn) VALUES (13, 'ABC13')";
+        String authorISBNEntry14 = "INSERT INTO Books.authorISBN(authorID, isbn) VALUES (14, 'ABC14')";
+        String authorISBNEntry15 = "INSERT INTO Books.authorISBN(authorID, isbn) VALUES (15, 'ABC15')";
+       
+        
+        //HERE ARE INSERT STRINGS FOR titles TABLE
+        String titlesEntry1 = "INSERT INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC1', 'Harry Potter', 1, 2000, 1, 30.00)";
+        String titlesEntry2 = "INSERT INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC2', 'Harry Potter', 3, 2002, 1, 30.00)";
+        String titlesEntry3 = "INSERT INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC3', 'Heart Of Darkness', 1, 1990, 2, 10.00)";
+        String titlesEntry4 = "INSERT INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC4', 'Lord Of The Rings', 1, 1999, 3, 60.00)";
+        String titlesEntry5 = "INSERT INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC5', 'Lord Of The Rings', 2, 2001, 3, 70.00)";
+        String titlesEntry6 = "INSERT INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC6', 'Lord Of The Rings', 3, 2003, 3, 70.00)";
+        String titlesEntry7 = "INSERT INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC7', 'The Great Gatsby', 1, 1960, 4, 30.00)";
+        String titlesEntry8 = "INSERT INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC8', 'The Beauty and The Beast', 5, 1980, 5, 20.00)";
+        String titlesEntry9 = "INSERT INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC9', 'Animal Farm', 1, 1985, 6, 25.00)";
+        String titlesEntry10 = "INSERT INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC10', 'The Hardy Boys', 1, 1950, 7, 20.00)";
+        String titlesEntry11 = "INSERT INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC11', 'Python for Dummies', 1, 2003, 8, 50.00)";
+        String titlesEntry12 = "INSERT INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC12', 'Java for Dummies', 1, 1995, 8, 50.00)";
+        String titlesEntry13 = "INSERT INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC13', 'C for Dummies', 1, 1990, 8, 50.00)";
+        String titlesEntry14 = "INSERT INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC14', 'C++ for Dummies', 1, 1992, 8, 50.00)";
+        String titlesEntry15 = "INSERT INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC15', 'Hadoop for DUmmies', 1, 2005, 8, 50.00)";
+        
+        
+        
+        
+       //HERE ARE INSERTS FOR publishers TABLE
+        String publishersEntry1 = "INSERT INTO Books.publishers(publisherID, publisherName) VALUES (1, 'HarryPotterPublisher')";
+        String publishersEntry2 = "INSERT INTO Books.publishers(publisherID, publisherName) VALUES (2, 'HeartOfDarknessPublisher')";
+        String publishersEntry3 = "INSERT INTO Books.publishers(publisherID, publisherName) VALUES (3, 'LordOfTheRingsPublisher')";
+        String publishersEntry4 = "INSERT INTO Books.publishers(publisherID, publisherName) VALUES (4, 'GreatGatsbyPublisher')";
+        String publishersEntry5 = "INSERT INTO Books.publishers(publisherID, publisherName) VALUES (5, 'TheBeautyAndTheBeastPublisher')";
+        String publishersEntry6 = "INSERT INTO Books.publishers(publisherID, publisherName) VALUES (6, 'AnimalFarmPublisher')";
+        String publishersEntry7 = "INSERT INTO Books.publishers(publisherID, publisherName) VALUES (7, 'TheHardyBoysPublisher')";
+        String publishersEntry8 = "INSERT INTO Books.publishers(publisherID, publisherName) VALUES (8, 'ForDummiesPublisher')";
+        String publishersEntry9 = "INSERT INTO Books.publishers(publisherID, publisherName) VALUES (9, 'GameOfThronesPublisher')";
+        String publishersEntry10 = "INSERT INTO Books.publishers(publisherID, publisherName) VALUES (10, '10Publisher')";
+        String publishersEntry11 = "INSERT INTO Books.publishers(publisherID, publisherName) VALUES (11, '11Publisher')";
+        String publishersEntry12 = "INSERT INTO Books.publishers(publisherID, publisherName) VALUES (12, '12Publisher')";
+        String publishersEntry13 = "INSERT INTO Books.publishers(publisherID, publisherName) VALUES (13, '13Publisher')";
+        String publishersEntry14 = "INSERT INTO Books.publishers(publisherID, publisherName) VALUES (14, '14Publisher')";
+        String publishersEntry15 = "INSERT INTO Books.publishers(publisherID, publisherName) VALUES (15, '15Publisher')";
+        
+        //HERE ARE THE RESULTSET OBJECTS
+        ResultSet rsSelectAllAuthorsFromAuthors = null;
+        ResultSet rsSelectAllPublishersFromPublishers = null;
+        ResultSet rsSelectSpecificPublisher = null;
+        
+        
+        
         
         try{
             //This is where we load the JDBC driver(Step 1)
             Class.forName("com.mysql.jdbc.Driver");
             System.out.println("WORKS");
             
-        }
-        catch(ClassNotFoundException e)
-        {
-            System.out.println("Unable to load the driver class");
-            return;
-        }
         
-       try{
             //All DB access is within try/catch block(Step 2)
             //Connect to the database specifying the user, password
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/","root", "password" );
-            Statement stmt = conn.createStatement();
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/","root", "password" );
+            stmt = conn.createStatement();
             
+            stmt.execute(sqlCreateDatabaseBooks); //Create Schema Books
+            System.out.println("Created Database Books");
+            
+            //Now connect to Books within LocalHost
+            booksconn = DriverManager.getConnection("jdbc:mysql://localhost:3066/Books", "root" , "password");
+            booksstmt = booksconn.createStatement();
+            //Now Create the tables needed.
+            booksstmt.executeUpdate(sqlCreateTableauthors);
+            booksstmt.executeUpdate(sqlCreateTableauthorISBN);
+            booksstmt.executeUpdate(sqlCreateTabletitles);
+            booksstmt.executeUpdate(sqlCreateTablepublishers);
+            System.out.println("Tables are now created");
+            //Now Time to put values in the table author
+            booksstmt.executeUpdate(authorEntry1);
+            booksstmt.executeUpdate(authorEntry2);
+            booksstmt.executeUpdate(authorEntry3);
+            booksstmt.executeUpdate(authorEntry4);
+            booksstmt.executeUpdate(authorEntry5);
+            booksstmt.executeUpdate(authorEntry6);
+            booksstmt.executeUpdate(authorEntry7);
+            booksstmt.executeUpdate(authorEntry8);
+            booksstmt.executeUpdate(authorEntry9);
+            booksstmt.executeUpdate(authorEntry10);
+            booksstmt.executeUpdate(authorEntry11);
+            booksstmt.executeUpdate(authorEntry12);
+            booksstmt.executeUpdate(authorEntry13);
+            booksstmt.executeUpdate(authorEntry14);
+            booksstmt.executeUpdate(authorEntry15);
+            
+            //Put values in the table authorISBN
+            booksstmt.executeUpdate(authorISBNEntry1);
+            booksstmt.executeUpdate(authorISBNEntry2);
+            booksstmt.executeUpdate(authorISBNEntry3);
+            booksstmt.executeUpdate(authorISBNEntry4);
+            booksstmt.executeUpdate(authorISBNEntry5);
+            booksstmt.executeUpdate(authorISBNEntry6);
+            booksstmt.executeUpdate(authorISBNEntry7);
+            booksstmt.executeUpdate(authorISBNEntry8);
+            booksstmt.executeUpdate(authorISBNEntry9);
+            booksstmt.executeUpdate(authorISBNEntry10);
+            booksstmt.executeUpdate(authorISBNEntry11);
+            booksstmt.executeUpdate(authorISBNEntry12);
+            booksstmt.executeUpdate(authorISBNEntry13);
+            booksstmt.executeUpdate(authorISBNEntry14);
+            booksstmt.executeUpdate(authorISBNEntry15);
+            
+            //Put values in the table titles
+            booksstmt.executeUpdate(titlesEntry1);
+            booksstmt.executeUpdate(titlesEntry2);
+            booksstmt.executeUpdate(titlesEntry3);
+            booksstmt.executeUpdate(titlesEntry4);
+            booksstmt.executeUpdate(titlesEntry5);
+            booksstmt.executeUpdate(titlesEntry6);
+            booksstmt.executeUpdate(titlesEntry7);
+            booksstmt.executeUpdate(titlesEntry8);
+            booksstmt.executeUpdate(titlesEntry9);
+            booksstmt.executeUpdate(titlesEntry10);
+            booksstmt.executeUpdate(titlesEntry11);
+            booksstmt.executeUpdate(titlesEntry12);
+            booksstmt.executeUpdate(titlesEntry13);
+            booksstmt.executeUpdate(titlesEntry14);
+            booksstmt.executeUpdate(titlesEntry15);
+            
+            //Put values in the publishers table
+            booksstmt.executeUpdate(publishersEntry1);
+            booksstmt.executeUpdate(publishersEntry2);
+            booksstmt.executeUpdate(publishersEntry3);
+            booksstmt.executeUpdate(publishersEntry4);
+            booksstmt.executeUpdate(publishersEntry5);
+            booksstmt.executeUpdate(publishersEntry6);
+            booksstmt.executeUpdate(publishersEntry7);
+            booksstmt.executeUpdate(publishersEntry8);
+            booksstmt.executeUpdate(publishersEntry9);
+            booksstmt.executeUpdate(publishersEntry10);
+            booksstmt.executeUpdate(publishersEntry12);
+            booksstmt.executeUpdate(publishersEntry13);
+            booksstmt.executeUpdate(publishersEntry14);
+            booksstmt.executeUpdate(publishersEntry15);
+            
+            
+            
+             }
+        catch(SQLException se){
+            se.printStackTrace();
+            
+        }catch(Exception e)
+        {
+            e.printStackTrace();
         }
+       
     }
     
 }
