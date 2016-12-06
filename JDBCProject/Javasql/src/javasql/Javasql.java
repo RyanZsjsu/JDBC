@@ -240,7 +240,7 @@ public class Javasql {
             //EXECUTE ALL AUTHORS BY LAST NAME ORDER QUERY
             System.out.println();
             System.out.println("**************All Authors By Ordered Last Name**************** ");
-            rsSelectAllAuthorsFromauthors = booksstmt.executeQuery("SELECT * FROM authors ORDER BY lastName ASC");
+            rsSelectAllAuthorsFromauthors = booksstmt.executeQuery("SELECT * FROM authors ORDER BY lastName ASC, firstname ASC");
             while(rsSelectAllAuthorsFromauthors.next()){
                 System.out.println(rsSelectAllAuthorsFromauthors.getString("lastName") + ", " +
                                    rsSelectAllAuthorsFromauthors.getString("firstName"));
