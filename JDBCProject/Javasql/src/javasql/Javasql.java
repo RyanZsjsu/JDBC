@@ -21,28 +21,32 @@ public class Javasql {
         Connection booksconn =  null; //connection to books in database
         Statement booksstmt =  null; //statment for books connection
         
+        
+        //STRING WE USE TO CREATE THE DATABASE BOOKS
         String sqlCreateDatabaseBooks = "CREATE DATABASE IF NOT EXISTS Books";
         
         
+        
+        //CREATE THE 4 DIFFERENT TABLES WITHIN BOOKS DATABASE WITH THESE STRINGS
         String sqlCreateTablepublishers = "CREATE TABLE IF NOT EXISTS publishers"
                                         + "(publisherID INTEGER, "
-                                        + " publisherName CHAR(100), "
+                                        + " publisherName CHAR(100) NOT NULL, "
                                         + "PRIMARY KEY( publisherID ))";
         
         String sqlCreateTabletitles = "CREATE TABLE IF NOT EXISTS titles"
                                         + " (isbn CHAR(10), "
-                                        + " title varchar(500), "
-                                        + " editionNumber INTEGER, "
-                                        + " year CHAR(4), "
-                                        + " publisherID INTEGER, "
+                                        + " title varchar(500) NOT NULL, "
+                                        + " editionNumber INTEGER NOT NULL, "
+                                        + " year CHAR(4) NOT NULL, "
+                                        + " publisherID INTEGER NOT NULL, "
                                         + " price DECIMAL (5,2) NOT NULL, "
                                         + " PRIMARY KEY( isbn ), "
                                         + " FOREIGN KEY (publisherID) REFERENCES publishers(publisherID))";
         
         String sqlCreateTableauthors = "CREATE TABLE IF NOT EXISTS authors"
                                         + "(authorID INTEGER not NULL AUTO_INCREMENT, "
-                                        + " firstName CHAR(20), "
-                                        + " lastName CHAR(20), "
+                                        + " firstName CHAR(20) NOT NULL, "
+                                        + " lastName CHAR(20) NOT NULL, "
                                         + " PRIMARY KEY ( authorID ))";
         
         String sqlCreateTableauthorISBN = "CREATE TABLE IF NOT EXISTS authorISBN"
@@ -56,78 +60,78 @@ public class Javasql {
         
         
         //HERE ARE INSERT STRINGS FOR AUTHOR TABLE
-        String authorEntry1 = "INSERT INTO Books.authors(authorID, firstName, lastName) VALUES (1, 'Ryan', 'Zaeni')";
-        String authorEntry2 = "INSERT INTO Books.authors(authorID, firstName, lastName) VALUES (2, 'John', 'Johnson')";
-        String authorEntry3 = "INSERT INTO Books.authors(authorID, firstName, lastName) VALUES (3, 'Ahmed', 'Ezzat')";
-        String authorEntry4 = "INSERT INTO Books.authors(authorID, firstName, lastName) VALUES (4, 'Rick', 'Ross')";
-        String authorEntry5 = "INSERT INTO Books.authors(authorID, firstName, lastName) VALUES (5, 'Rick', 'Jones')";
-        String authorEntry6 = "INSERT INTO Books.authors(authorID, firstName, lastName) VALUES (6, 'Peter', 'Griffin')";
-        String authorEntry7 = "INSERT INTO Books.authors(authorID, firstName, lastName) VALUES (7, 'Peter', 'Parker')";
-        String authorEntry8 = "INSERT INTO Books.authors(authorID, firstName, lastName) VALUES (8, 'Jack', 'Black')";
-        String authorEntry9 = "INSERT INTO Books.authors(authorID, firstName, lastName) VALUES (9, 'Nick', 'Jonas')";
-        String authorEntry10 = "INSERT INTO Books.authors(authorID, firstName, lastName) VALUES (10, 'Taylor', 'Swift')";
-        String authorEntry11 = "INSERT INTO Books.authors(authorID, firstName, lastName) VALUES (11, 'Donald', 'Trump')";
-        String authorEntry12 = "INSERT INTO Books.authors(authorID, firstName, lastName) VALUES (12, 'Barrack', 'Obama')";
-        String authorEntry13 = "INSERT INTO Books.authors(authorID, firstName, lastName) VALUES (13, 'George', 'Bush')";
-        String authorEntry14 = "INSERT INTO Books.authors(authorID, firstName, lastName) VALUES (14, 'Bill', 'Clinton')";
-        String authorEntry15 = "INSERT INTO Books.authors(authorID, firstName, lastName) VALUES (15, 'Hilary', 'Clinton')";
+        String authorEntry1 = "INSERT IGNORE INTO Books.authors(authorID, firstName, lastName) VALUES (1, 'Ryan', 'Zaeni')";
+        String authorEntry2 = "INSERT IGNORE INTO Books.authors(authorID, firstName, lastName) VALUES (2, 'John', 'Johnson')";
+        String authorEntry3 = "INSERT IGNORE INTO Books.authors(authorID, firstName, lastName) VALUES (3, 'Ahmed', 'Ezzat')";
+        String authorEntry4 = "INSERT IGNORE INTO Books.authors(authorID, firstName, lastName) VALUES (4, 'Rick', 'Ross')";
+        String authorEntry5 = "INSERT IGNORE INTO Books.authors(authorID, firstName, lastName) VALUES (5, 'Rick', 'Jones')";
+        String authorEntry6 = "INSERT IGNORE INTO Books.authors(authorID, firstName, lastName) VALUES (6, 'Peter', 'Griffin')";
+        String authorEntry7 = "INSERT IGNORE INTO Books.authors(authorID, firstName, lastName) VALUES (7, 'Peter', 'Parker')";
+        String authorEntry8 = "INSERT IGNORE INTO Books.authors(authorID, firstName, lastName) VALUES (8, 'Jack', 'Black')";
+        String authorEntry9 = "INSERT IGNORE INTO Books.authors(authorID, firstName, lastName) VALUES (9, 'Nick', 'Jonas')";
+        String authorEntry10 = "INSERT IGNORE INTO Books.authors(authorID, firstName, lastName) VALUES (10, 'Taylor', 'Swift')";
+        String authorEntry11 = "INSERT IGNORE INTO Books.authors(authorID, firstName, lastName) VALUES (11, 'Donald', 'Trump')";
+        String authorEntry12 = "INSERT IGNORE INTO Books.authors(authorID, firstName, lastName) VALUES (12, 'Barrack', 'Obama')";
+        String authorEntry13 = "INSERT IGNORE INTO Books.authors(authorID, firstName, lastName) VALUES (13, 'George', 'Bush')";
+        String authorEntry14 = "INSERT IGNORE INTO Books.authors(authorID, firstName, lastName) VALUES (14, 'Bill', 'Clinton')";
+        String authorEntry15 = "INSERT IGNORE INTO Books.authors(authorID, firstName, lastName) VALUES (15, 'Hilary', 'Clinton')";
         
         //HERE ARE INSERT STRINGS FOR authorISBN TABLE
-        String authorISBNEntry1 = "INSERT INTO Books.authorISBN(authorID, isbn) VALUES (1, 'ABC1')";
-        String authorISBNEntry2 = "INSERT INTO Books.authorISBN(authorID, isbn) VALUES (2, 'ABC2')";
-        String authorISBNEntry3 = "INSERT INTO Books.authorISBN(authorID, isbn) VALUES (3, 'ABC3')";
-        String authorISBNEntry4 = "INSERT INTO Books.authorISBN(authorID, isbn) VALUES (4, 'ABC4')";
-        String authorISBNEntry5 = "INSERT INTO Books.authorISBN(authorID, isbn) VALUES (5, 'ABC5')";
-        String authorISBNEntry6 = "INSERT INTO Books.authorISBN(authorID, isbn) VALUES (6, 'ABC6')";
-        String authorISBNEntry7 = "INSERT INTO Books.authorISBN(authorID, isbn) VALUES (7, 'ABC7')";
-        String authorISBNEntry8 = "INSERT INTO Books.authorISBN(authorID, isbn) VALUES (8, 'ABC8')";
-        String authorISBNEntry9 = "INSERT INTO Books.authorISBN(authorID, isbn) VALUES (9, 'ABC9')";
-        String authorISBNEntry10 = "INSERT INTO Books.authorISBN(authorID, isbn) VALUES (10, 'ABC10')";
-        String authorISBNEntry11 = "INSERT INTO Books.authorISBN(authorID, isbn) VALUES (11, 'ABC11')";
-        String authorISBNEntry12 = "INSERT INTO Books.authorISBN(authorID, isbn) VALUES (12, 'ABC12')";
-        String authorISBNEntry13 = "INSERT INTO Books.authorISBN(authorID, isbn) VALUES (13, 'ABC13')";
-        String authorISBNEntry14 = "INSERT INTO Books.authorISBN(authorID, isbn) VALUES (14, 'ABC14')";
-        String authorISBNEntry15 = "INSERT INTO Books.authorISBN(authorID, isbn) VALUES (15, 'ABC15')";
+        String authorISBNEntry1 = "INSERT IGNORE INTO Books.authorISBN(authorID, isbn) VALUES (1, 'ABC1')";
+        String authorISBNEntry2 = "INSERT IGNORE INTO Books.authorISBN(authorID, isbn) VALUES (2, 'ABC2')";
+        String authorISBNEntry3 = "INSERT IGNORE INTO Books.authorISBN(authorID, isbn) VALUES (3, 'ABC3')";
+        String authorISBNEntry4 = "INSERT IGNORE INTO Books.authorISBN(authorID, isbn) VALUES (4, 'ABC4')";
+        String authorISBNEntry5 = "INSERT IGNORE INTO Books.authorISBN(authorID, isbn) VALUES (5, 'ABC5')";
+        String authorISBNEntry6 = "INSERT IGNORE INTO Books.authorISBN(authorID, isbn) VALUES (6, 'ABC6')";
+        String authorISBNEntry7 = "INSERT IGNORE INTO Books.authorISBN(authorID, isbn) VALUES (7, 'ABC7')";
+        String authorISBNEntry8 = "INSERT IGNORE INTO Books.authorISBN(authorID, isbn) VALUES (8, 'ABC8')";
+        String authorISBNEntry9 = "INSERT IGNORE INTO Books.authorISBN(authorID, isbn) VALUES (9, 'ABC9')";
+        String authorISBNEntry10 = "INSERT IGNORE INTO Books.authorISBN(authorID, isbn) VALUES (10, 'ABC10')";
+        String authorISBNEntry11 = "INSERT IGNORE INTO Books.authorISBN(authorID, isbn) VALUES (11, 'ABC11')";
+        String authorISBNEntry12 = "INSERT IGNORE INTO Books.authorISBN(authorID, isbn) VALUES (12, 'ABC12')";
+        String authorISBNEntry13 = "INSERT IGNORE INTO Books.authorISBN(authorID, isbn) VALUES (13, 'ABC13')";
+        String authorISBNEntry14 = "INSERT IGNORE INTO Books.authorISBN(authorID, isbn) VALUES (14, 'ABC14')";
+        String authorISBNEntry15 = "INSERT IGNORE INTO Books.authorISBN(authorID, isbn) VALUES (15, 'ABC15')";
        
         
         //HERE ARE INSERT STRINGS FOR titles TABLE
-        String titlesEntry1 = "INSERT INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC1', 'Harry Potter', 1, 2000, 1, 30.00)";
-        String titlesEntry2 = "INSERT INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC2', 'Harry Potter', 3, 2002, 1, 30.00)";
-        String titlesEntry3 = "INSERT INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC3', 'Heart Of Darkness', 1, 1990, 2, 10.00)";
-        String titlesEntry4 = "INSERT INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC4', 'Lord Of The Rings', 1, 1999, 3, 60.00)";
-        String titlesEntry5 = "INSERT INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC5', 'Lord Of The Rings', 2, 2001, 3, 70.00)";
-        String titlesEntry6 = "INSERT INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC6', 'Lord Of The Rings', 3, 2003, 3, 70.00)";
-        String titlesEntry7 = "INSERT INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC7', 'The Great Gatsby', 1, 1960, 4, 30.00)";
-        String titlesEntry8 = "INSERT INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC8', 'The Beauty and The Beast', 5, 1980, 5, 20.00)";
-        String titlesEntry9 = "INSERT INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC9', 'Animal Farm', 1, 1985, 6, 25.00)";
-        String titlesEntry10 = "INSERT INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC10', 'The Hardy Boys', 1, 1950, 7, 20.00)";
-        String titlesEntry11 = "INSERT INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC11', 'Python for Dummies', 1, 2003, 8, 50.00)";
-        String titlesEntry12 = "INSERT INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC12', 'Java for Dummies', 1, 1995, 8, 50.00)";
-        String titlesEntry13 = "INSERT INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC13', 'C for Dummies', 1, 1990, 8, 50.00)";
-        String titlesEntry14 = "INSERT INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC14', 'C++ for Dummies', 1, 1992, 8, 50.00)";
-        String titlesEntry15 = "INSERT INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC15', 'Hadoop for DUmmies', 1, 2005, 8, 50.00)";
+        String titlesEntry1 = "INSERT IGNORE INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC1', 'Harry Potter', 1, 2000, 1, 30.00)";
+        String titlesEntry2 = "INSERT IGNORE INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC2', 'Harry Potter', 3, 2002, 1, 30.00)";
+        String titlesEntry3 = "INSERT IGNORE INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC3', 'Heart Of Darkness', 1, 1990, 2, 10.00)";
+        String titlesEntry4 = "INSERT IGNORE INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC4', 'Lord Of The Rings', 1, 1999, 3, 60.00)";
+        String titlesEntry5 = "INSERT IGNORE INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC5', 'Lord Of The Rings', 2, 2001, 3, 70.00)";
+        String titlesEntry6 = "INSERT IGNORE INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC6', 'Lord Of The Rings', 3, 2003, 3, 70.00)";
+        String titlesEntry7 = "INSERT IGNORE INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC7', 'The Great Gatsby', 1, 1960, 4, 30.00)";
+        String titlesEntry8 = "INSERT IGNORE INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC8', 'The Beauty and The Beast', 5, 1980, 5, 20.00)";
+        String titlesEntry9 = "INSERT IGNORE INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC9', 'Animal Farm', 1, 1985, 6, 25.00)";
+        String titlesEntry10 = "INSERT IGNORE INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC10', 'The Hardy Boys', 1, 1950, 7, 20.00)";
+        String titlesEntry11 = "INSERT IGNORE INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC11', 'Python for Dummies', 1, 2003, 8, 50.00)";
+        String titlesEntry12 = "INSERT IGNORE INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC12', 'Java for Dummies', 1, 1995, 8, 50.00)";
+        String titlesEntry13 = "INSERT IGNORE INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC13', 'C for Dummies', 1, 1990, 8, 50.00)";
+        String titlesEntry14 = "INSERT IGNORE INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC14', 'C++ for Dummies', 1, 1992, 8, 50.00)";
+        String titlesEntry15 = "INSERT IGNORE INTO Books.titles(isbn, title, editionNumber, year, publisherID, price) VALUES ('ABC15', 'Hadoop for DUmmies', 1, 2005, 8, 50.00)";
         
         
         
         
        //HERE ARE INSERTS FOR publishers TABLE
-        String publishersEntry1 = "INSERT INTO Books.publishers(publisherID, publisherName) VALUES (1, 'HarryPotterPublisher')";
-        String publishersEntry2 = "INSERT INTO Books.publishers(publisherID, publisherName) VALUES (2, 'HeartOfDarknessPublisher')";
-        String publishersEntry3 = "INSERT INTO Books.publishers(publisherID, publisherName) VALUES (3, 'LordOfTheRingsPublisher')";
-        String publishersEntry4 = "INSERT INTO Books.publishers(publisherID, publisherName) VALUES (4, 'GreatGatsbyPublisher')";
-        String publishersEntry5 = "INSERT INTO Books.publishers(publisherID, publisherName) VALUES (5, 'TheBeautyAndTheBeastPublisher')";
-        String publishersEntry6 = "INSERT INTO Books.publishers(publisherID, publisherName) VALUES (6, 'AnimalFarmPublisher')";
-        String publishersEntry7 = "INSERT INTO Books.publishers(publisherID, publisherName) VALUES (7, 'TheHardyBoysPublisher')";
-        String publishersEntry8 = "INSERT INTO Books.publishers(publisherID, publisherName) VALUES (8, 'ForDummiesPublisher')";
-        String publishersEntry9 = "INSERT INTO Books.publishers(publisherID, publisherName) VALUES (9, 'GameOfThronesPublisher')";
-        String publishersEntry10 = "INSERT INTO Books.publishers(publisherID, publisherName) VALUES (10, '10Publisher')";
-        String publishersEntry11 = "INSERT INTO Books.publishers(publisherID, publisherName) VALUES (11, '11Publisher')";
-        String publishersEntry12 = "INSERT INTO Books.publishers(publisherID, publisherName) VALUES (12, '12Publisher')";
-        String publishersEntry13 = "INSERT INTO Books.publishers(publisherID, publisherName) VALUES (13, '13Publisher')";
-        String publishersEntry14 = "INSERT INTO Books.publishers(publisherID, publisherName) VALUES (14, '14Publisher')";
-        String publishersEntry15 = "INSERT INTO Books.publishers(publisherID, publisherName) VALUES (15, '15Publisher')";
+        String publishersEntry1 = "INSERT IGNORE INTO Books.publishers(publisherID, publisherName) VALUES (1, 'HarryPotterPublisher')";
+        String publishersEntry2 = "INSERT IGNORE INTO Books.publishers(publisherID, publisherName) VALUES (2, 'HeartOfDarknessPublisher')";
+        String publishersEntry3 = "INSERT IGNORE INTO Books.publishers(publisherID, publisherName) VALUES (3, 'LordOfTheRingsPublisher')";
+        String publishersEntry4 = "INSERT IGNORE INTO Books.publishers(publisherID, publisherName) VALUES (4, 'GreatGatsbyPublisher')";
+        String publishersEntry5 = "INSERT IGNORE INTO Books.publishers(publisherID, publisherName) VALUES (5, 'TheBeautyAndTheBeastPublisher')";
+        String publishersEntry6 = "INSERT IGNORE INTO Books.publishers(publisherID, publisherName) VALUES (6, 'AnimalFarmPublisher')";
+        String publishersEntry7 = "INSERT IGNORE INTO Books.publishers(publisherID, publisherName) VALUES (7, 'TheHardyBoysPublisher')";
+        String publishersEntry8 = "INSERT IGNORE INTO Books.publishers(publisherID, publisherName) VALUES (8, 'ForDummiesPublisher')";
+        String publishersEntry9 = "INSERT IGNORE INTO Books.publishers(publisherID, publisherName) VALUES (9, 'GameOfThronesPublisher')";
+        String publishersEntry10 = "INSERT IGNORE INTO Books.publishers(publisherID, publisherName) VALUES (10, '10Publisher')";
+        String publishersEntry11 = "INSERT IGNORE INTO Books.publishers(publisherID, publisherName) VALUES (11, '11Publisher')";
+        String publishersEntry12 = "INSERT IGNORE INTO Books.publishers(publisherID, publisherName) VALUES (12, '12Publisher')";
+        String publishersEntry13 = "INSERT IGNORE INTO Books.publishers(publisherID, publisherName) VALUES (13, '13Publisher')";
+        String publishersEntry14 = "INSERT IGNORE INTO Books.publishers(publisherID, publisherName) VALUES (14, '14Publisher')";
+        String publishersEntry15 = "INSERT IGNORE INTO Books.publishers(publisherID, publisherName) VALUES (15, '15Publisher')";
         
-        //HERE ARE THE RESULTSET OBJECTS
+        //HERE ARE RESULTSET OBJECTS
         ResultSet rsSelectAllAuthorsFromauthors = null;
         ResultSet rsSelectAllPublishersFrompublishers = null;
         ResultSet rsSelectSpecificPublisher = null;
@@ -251,10 +255,78 @@ public class Javasql {
             }
               
             //QUERY FOR SPECIFIC PUBLISHER AND LIST ALL THEIR BOOKS. ORDERED BY TITLE.
-              //rsSelectSpecificPublisher = booksstmt.executeQuery("SELECT * FROM ")
+            System.out.println();
+            System.out.println("***************FOR SPECIFIC PUBLISHER NAME: HARRYPOTTERPUBLISHER*************");
+              rsSelectSpecificPublisher = booksstmt.executeQuery("SELECT t.* FROM titles AS t INNER JOIN publishers AS p "
+                      + "ON p.publisherName = 'HarryPotterPublisher' AND p.publisherID = t.publisherID");
             
+          while(rsSelectSpecificPublisher.next()){
+                System.out.println(rsSelectSpecificPublisher.getString("title") + " " + 
+                        rsSelectSpecificPublisher.getString("year") + " " 
+                        + rsSelectSpecificPublisher.getString("isbn"));
+            }
+          
+          //ADD NEW AUTHOR
+          System.out.println();
+          System.out.println("*******ADDING NEW AUTHOR**********");
+          booksstmt.execute("INSERT INTO authors(firstName, lastName) VALUES ('NEW', 'AUTHOR')");
+          ResultSet rsaddAuthor = booksstmt.executeQuery("SELECT * FROM authors WHERE firstName = 'NEW' AND lastName = 'AUTHOR'");
+          while(rsaddAuthor.next())
+          {
+              System.out.println(rsaddAuthor.getString("firstName") + " " + rsaddAuthor.getString("lastName"));
+          }
+          
+          //EDIT/UPDATE EXISTING INFO ABOUT AUTHOR
+          System.out.println();
+          System.out.println("********UPDATING AUTHOR, CHANGING LAST NAME TO LOLOLOLOLOLOL***********");
+          booksstmt.execute("UPDATE authors SET lastName = 'LOLOLOLOLOLOLOLOL' WHERE firstName = 'NEW'");
+          ResultSet rsEditAuthor = booksstmt.executeQuery("SELECT * FROM authors WHERE lastName = 'LOLOLOLOLOLOLOLOL'");
+          while(rsEditAuthor.next())
+          {
+              System.out.println(rsEditAuthor.getString("firstName") + " " + rsEditAuthor.getString("lastName"));
+          }
+          
+          //ADD A NEW TITLE FOR AN AUTHOR
+          System.out.println();
+          System.out.println("*****************ADD NEW TITLE FOR AUTHOR***************");
+          booksstmt.execute("INSERT INTO titles(publisherID,isbn,title,editionNumber, year, price) VALUES (10, 'ABC100', 'NEWTITLE', 1, 2017, 10.00)");
+          ResultSet rsNewTitleForAuthor = booksstmt.executeQuery("SELECT * FROM titles WHERE isbn='ABC100'");
+          while(rsNewTitleForAuthor.next())
+          {
+              System.out.println(rsNewTitleForAuthor.getString("isbn") + " " 
+                      + rsNewTitleForAuthor.getString("title") + " " 
+                      + rsNewTitleForAuthor.getString("editionNumber") + " " 
+                      + rsNewTitleForAuthor.getString("year") + " " 
+                      + rsNewTitleForAuthor.getString("price"));
+          }
+          
+          //ADD A NEW PUBLISHER
+          System.out.println();
+          System.out.println("*********ADDING NEW PUBLISHER***************`");
+          booksstmt.execute("INSERT INTO publishers(publisherID, publisherName) VALUES (16, 'NEWPUBLISHER')");
+          ResultSet rsAddPublisher = booksstmt.executeQuery("SELECT * FROM publishers WHERE publisherName = 'NEWPUBLISHER'");
+          while(rsAddPublisher.next())
+          {
+              System.out.println(rsAddPublisher.getString("publisherName") + " " 
+                      + rsAddPublisher.getString("publisherID"));
+          }
+          
+          //EDIT/UPDATE AN EXISTING INFO ABOUT PUBLISHER
+            System.out.println();
+            System.out.println("********EDIT AN EXISTING PUBLISHER********");
+            booksstmt.execute("UPDATE publishers SET publisherName = 'PublishingCompany1' WHERE publisherName = 'NEWPUBLISHER'");
+            ResultSet rsUpdatePublisherName = booksstmt.executeQuery("SELECT * FROM publishers WHERE publisherName = 'PublishingCompany1'");
+            while(rsUpdatePublisherName.next())
+            {
+                System.out.println(rsUpdatePublisherName.getString("publisherName") + " " + 
+                        rsUpdatePublisherName.getString("publisherID"));
+            }
             
-             }
+                booksstmt.close();
+                booksconn.close();
+                
+                
+             } //end of big try for all DB access
         catch(SQLException se){
             se.printStackTrace();
             
