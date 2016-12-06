@@ -20,28 +20,32 @@ public class Javasql {
         Connection booksconn =  null; //connection to books in database
         Statement booksstmt =  null; //statment for books connection
         
+        
+        //STRING WE USE TO CREATE THE DATABASE BOOKS
         String sqlCreateDatabaseBooks = "CREATE DATABASE IF NOT EXISTS Books";
         
         
+        
+        //CREATE THE 4 DIFFERENT TABLES WITHIN BOOKS DATABASE WITH THESE STRINGS
         String sqlCreateTablepublishers = "CREATE TABLE IF NOT EXISTS publishers"
-        + "(publisherID INTEGER, "
-        + " publisherName CHAR(100), "
+        + "(publisherID INTEGER not NULL AUTO_INCREMENT, "
+        + " publisherName CHAR(100) NOT NULL, "
         + "PRIMARY KEY( publisherID ))";
         
         String sqlCreateTabletitles = "CREATE TABLE IF NOT EXISTS titles"
         + " (isbn CHAR(10), "
-        + " title varchar(500), "
-        + " editionNumber INTEGER, "
-        + " year CHAR(4), "
-        + " publisherID INTEGER, "
+        + " title varchar(500) NOT NULL, "
+        + " editionNumber INTEGER NOT NULL, "
+        + " year CHAR(4) NOT NULL, "
+        + " publisherID INTEGER NOT NULL, "
         + " price DECIMAL (5,2) NOT NULL, "
         + " PRIMARY KEY( isbn ), "
         + " FOREIGN KEY (publisherID) REFERENCES publishers(publisherID))";
         
         String sqlCreateTableauthors = "CREATE TABLE IF NOT EXISTS authors"
         + "(authorID INTEGER not NULL AUTO_INCREMENT, "
-        + " firstName CHAR(20), "
-        + " lastName CHAR(20), "
+        + " firstName CHAR(20) NOT NULL, "
+        + " lastName CHAR(20) NOT NULL, "
         + " PRIMARY KEY ( authorID ))";
         
         String sqlCreateTableauthorISBN = "CREATE TABLE IF NOT EXISTS authorISBN"
@@ -126,7 +130,7 @@ public class Javasql {
         String publishersEntry14 = "INSERT IGNORE INTO Books.publishers(publisherID, publisherName) VALUES (14, '14Publisher')";
         String publishersEntry15 = "INSERT IGNORE INTO Books.publishers(publisherID, publisherName) VALUES (15, '15Publisher')";
         
-        //HERE ARE THE RESULTSET OBJECTS
+        //HERE ARE RESULTSET OBJECTS
         ResultSet rsSelectAllAuthorsFromauthors = null;
         ResultSet rsSelectAllPublishersFrompublishers = null;
         ResultSet rsSelectSpecificPublisher = null;
@@ -142,7 +146,7 @@ public class Javasql {
             
             //All DB access is within try/catch block(Step 2)
             //Connect to the database specifying the user, password
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Books","root", "password" );
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/","root", "password" );
             stmt = conn.createStatement();
             
             stmt.execute(sqlCreateDatabaseBooks); //Create Schema Books
@@ -172,6 +176,7 @@ public class Javasql {
             booksstmt.executeUpdate(publishersEntry8);
             booksstmt.executeUpdate(publishersEntry9);
             booksstmt.executeUpdate(publishersEntry10);
+            booksstmt.executeUpdate(publishersEntry11);
             booksstmt.executeUpdate(publishersEntry12);
             booksstmt.executeUpdate(publishersEntry13);
             booksstmt.executeUpdate(publishersEntry14);
@@ -213,7 +218,6 @@ public class Javasql {
             booksstmt.executeUpdate(authorEntry14);
             booksstmt.executeUpdate(authorEntry15);
             
-            
             //Put values in the table authorISBN
             booksstmt.executeUpdate(authorISBNEntry1);
             booksstmt.executeUpdate(authorISBNEntry2);
@@ -233,15 +237,12 @@ public class Javasql {
             
             //TIME TO EXECUTE SOME QUERIES
             
-            
-            
-            
             //EXECUTE ALL AUTHORS BY LAST NAME ORDER QUERY
             System.out.println();
             System.out.println("**************All Authors By Ordered Last Name**************** ");
-            rsSelectAllAuthorsFromauthors = booksstmt.executeQuery("SELECT * FROM authors ORDER BY lastName ASC, firstName ASC");
+            rsSelectAllAuthorsFromauthors = booksstmt.executeQuery("SELECT * FROM authors ORDER BY lastName ASC");
             while(rsSelectAllAuthorsFromauthors.next()){
-                System.out.println(rsSelectAllAuthorsFromauthors.getString("lastName") + " " +
+                System.out.println(rsSelectAllAuthorsFromauthors.getString("lastName") + ", " +
                                    rsSelectAllAuthorsFromauthors.getString("firstName"));
             }
             
@@ -254,10 +255,79 @@ public class Javasql {
             }
             
             //QUERY FOR SPECIFIC PUBLISHER AND LIST ALL THEIR BOOKS. ORDERED BY TITLE.
-            //rsSelectSpecificPublisher = booksstmt.executeQuery("SELECT * FROM ")
+            System.out.println();
+            System.out.println("***************FOR SPECIFIC PUBLISHER NAME: HARRYPOTTERPUBLISHER*************");
+            rsSelectSpecificPublisher = booksstmt.executeQuery("SELECT t.* FROM titles AS t INNER JOIN publishers AS p "
+                                                               + "ON p.publisherName = 'HarryPotterPublisher' AND p.publisherID = t.publisherID");
+            
+            while(rsSelectSpecificPublisher.next()){
+                System.out.println(rsSelectSpecificPublisher.getString("title") + " " +
+                                   rsSelectSpecificPublisher.getString("year") + " "
+                                   + rsSelectSpecificPublisher.getString("isbn"));
+            }
+            
+            //ADD NEW AUTHOR
+            System.out.println();
+            System.out.println("*******ADDING NEW AUTHOR**********");
+            booksstmt.execute("INSERT INTO authors(firstName, lastName) VALUES ('NEW', 'AUTHOR')");
+            ResultSet rsaddAuthor = booksstmt.executeQuery("SELECT * FROM authors WHERE firstName = 'NEW' AND lastName = 'AUTHOR'");
+            while(rsaddAuthor.next())
+            {
+                System.out.println(rsaddAuthor.getString("firstName") + " " + rsaddAuthor.getString("lastName"));
+            }
+            
+            //EDIT/UPDATE EXISTING INFO ABOUT AUTHOR
+            System.out.println();
+            System.out.println("********UPDATING AUTHOR, CHANGING LAST NAME TO LOLOLOLOLOLOL***********");
+            booksstmt.execute("UPDATE authors SET lastName = 'LOLOLOLOLOLOLOLOL' WHERE firstName = 'NEW'");
+            ResultSet rsEditAuthor = booksstmt.executeQuery("SELECT * FROM authors WHERE lastName = 'LOLOLOLOLOLOLOLOL'");
+            while(rsEditAuthor.next())
+            {
+                System.out.println(rsEditAuthor.getString("firstName") + " " + rsEditAuthor.getString("lastName")+ " " + rsEditAuthor.getString("authorID"));
+            }
+            
+            //ADD A NEW TITLE FOR AN AUTHOR
+            System.out.println();
+            System.out.println("*****************ADD NEW TITLE FOR AUTHOR***************");
+            booksstmt.execute("INSERT INTO titles(publisherID,isbn,title,editionNumber, year, price) VALUES (10, 'ABC100', 'NEWTITLE', 1, 2017, 10.00)");
+            booksstmt.execute("INSERT INTO authorISBN (authorID,isbn) VALUES (16, 'ABC100')");
+            ResultSet rsNewTitleForAuthor = booksstmt.executeQuery("SELECT * FROM titles WHERE isbn='ABC100'");
+            while(rsNewTitleForAuthor.next())
+            {
+                System.out.println(rsNewTitleForAuthor.getString("isbn") + " "
+                                   + rsNewTitleForAuthor.getString("title") + " "
+                                   + rsNewTitleForAuthor.getString("editionNumber") + " "
+                                   + rsNewTitleForAuthor.getString("year") + " "
+                                   + rsNewTitleForAuthor.getString("price"));
+            }
+            
+            //ADD A NEW PUBLISHER
+            System.out.println();
+            System.out.println("*********ADDING NEW PUBLISHER***************`");
+            booksstmt.execute("INSERT INTO publishers(publisherName) VALUES ( 'NEWPUBLISHER')");
+            ResultSet rsAddPublisher = booksstmt.executeQuery("SELECT * FROM publishers WHERE publisherName = 'NEWPUBLISHER'");
+            while(rsAddPublisher.next())
+            {
+                System.out.println(rsAddPublisher.getString("publisherName") + " "
+                                   + rsAddPublisher.getString("publisherID"));
+            }
+            
+            //EDIT/UPDATE AN EXISTING INFO ABOUT PUBLISHER
+            System.out.println();
+            System.out.println("********EDIT AN EXISTING PUBLISHER********");
+            booksstmt.execute("UPDATE publishers SET publisherName = 'PublishingCompany1' WHERE publisherName = 'NEWPUBLISHER'");
+            ResultSet rsUpdatePublisherName = booksstmt.executeQuery("SELECT * FROM publishers WHERE publisherName = 'PublishingCompany1'");
+            while(rsUpdatePublisherName.next())
+            {
+                System.out.println(rsUpdatePublisherName.getString("publisherName") + " " +
+                                   rsUpdatePublisherName.getString("publisherID"));
+            }
+            
+            booksstmt.close();
+            booksconn.close();
             
             
-        }
+        } //end of big try for all DB access
         catch(SQLException se){
             se.printStackTrace();
             
